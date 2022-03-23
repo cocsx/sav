@@ -1,32 +1,27 @@
 # Sort Algoriths Visualization (a.k.a SAV)
 
-Project started to learn C and to have fun with SDL2.
-
-## Present Sorting Algorithms
-
-- [ ] Bubble Sort
-- [ ] Insertion Sort
-- [ ] QuickSort
-- [ ] HeapSort
-
-## What have to be implemented in this project
-
-Simple graphical interface to select the algorithm to use, random data generation and multiple data view.
+The purpouse of this project is to see how sorting algorithms work and to visualize the operations with wich they sort in the hope of understanding them in a better way.
 
 ## Achievements
 
-```text
-NULL
-```
+- **2022-03-23**
+  - First window and the visualization of the simplest sorting algorithm with a complexity of $O(n^2)$
 
-## Prerequisites
+## How to start the program
 
-* SDL2
+**Without SDL2 the program can't start**.
 
-## How do i compile and run the project
+If you have *SDL2* installed in your pc you can run the command below.
 
-It's simple just use the commands below is the project folder:
 
 ```shell
 make && ./sav
 ```
+
+If you *do not* have it and you use a Linux distrubution you can install it with yout packet manager, for example in arch:
+
+```shell
+pacman -S sdl2
+```
+
+If you have Windows or MacOS good luck.
