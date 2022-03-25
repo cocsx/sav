@@ -23,7 +23,7 @@ void button_init_colors(Button *button, char *text, int x, int y, int w, int h, 
 
 void button_init(Button *button, char *text, int x, int y, int w, int h) {  
     SDL_Color active_color   = (SDL_Color) { .r = 0x4D, .g = 0x4D, .b = 0x4D, .a = 0xFF};
-    SDL_Color inactive_color = (SDL_Color) { .r = 0x00, .g = 0x00, .b = 0x00, .a = 0xFF};
+    SDL_Color inactive_color = (SDL_Color) { .r = 0x19, .g = 0x19, .b = 0x19, .a = 0xFF};
     button_init_colors(
         button, 
         text,  
