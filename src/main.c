@@ -8,9 +8,9 @@
 int main_menu_loop(Window *window) {
     SDL_Event event;
 
-    Button insertion_sort, bubble_sort, quick_sort, heap_sort, merge_sort, quit_button;
+    Button insertion_sort, shaker_sort, quick_sort, heap_sort, merge_sort, quit_button;
     button_init(&insertion_sort, "Insertion sort", 100, 10, 200, 50);
-    button_init(&bubble_sort, "Bubble sort", 100, 70, 200, 50);
+    button_init(&shaker_sort, "Shaker sort", 100, 70, 200, 50);
     button_init(&quick_sort, "Quick sort", 100, 130, 200, 50);
     button_init(&heap_sort, "Heap sort", 100, 190, 200, 50);
     button_init(&merge_sort, "Merge sort", 100, 250, 200, 50);
@@ -24,7 +24,7 @@ int main_menu_loop(Window *window) {
 
         if (button_render(&insertion_sort, window, &event))
             return 1;
-        if (button_render(&bubble_sort, window, &event))
+        if (button_render(&shaker_sort, window, &event))
             return 2;
         if (button_render(&quick_sort, window, &event))
             return 3; 
@@ -56,7 +56,7 @@ int main() {
         int index = main_menu_loop(&window);
         void (*fun_sort_arr[])(Datas *, Window *, int, int) = {
             insertion_sort, 
-            bubble_sort, 
+            shaker_sort, 
             quick_sort, 
             heap_sort, 
             merge_sort

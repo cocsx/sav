@@ -78,19 +78,22 @@ void insertion_sort(Datas *datas, Window *window, int start, int end) {
 }
 // INSERTIONSORT <=======================================================
 
-// =======================================================> BUBBLESORTSORT
-void bubble_sort(Datas *datas, Window *window, int start, int end) {
+// =======================================================> SHAKERSORT
+void shaker_sort(Datas *datas, Window *window, int start, int end) {
     (void) start;
-    int i, j;
-    for (i = 0; i < end; i++) { 
-       for (j = 0; j < end; j++) {
-           if (datas->rects[j].h < datas->rects[j + 1].h){
-              swap(datas, window, j, j + 1, 200);
-            }
-        }
+    int p, i;
+    for (p = 1; p <= end / 2; p++) {
+
+        for (i = p - 1; i < end - p; i++)
+            if (datas->rects[i].h < datas->rects[i+1].h)
+                swap(datas, window, i, i + 1, 0);
+
+        for (i = end - p - 1; i >= p; i--)
+            if (datas->rects[i].h > datas->rects[i-1].h)
+                swap(datas, window, i, i - 1, 0);
     }
 }
-// BUBBLESORT <=======================================================
+// SHAKERSORT <=======================================================
 
 // =======================================================> QUICKSORT
 int partition (Datas *datas, Window *window, int start, int end) {
@@ -132,7 +135,7 @@ void heapify(Datas *datas, Window *window, int n, int i) {
     }
 
     if (largest != i) {
-        swap(datas, window, i, largest, 1000);
+        swap(datas, window, i, largest, 2000);
         heapify(datas, window, n, largest);
     }
 }

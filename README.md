@@ -7,7 +7,7 @@ The purpouse of this project is to see how sorting algorithms work and to visual
 It can visualize the following algorithms:
 
 - Insertion Sort
-- Bubble Sort
+- Shaker Sort
 - Quick Sort
 - Heap Sort
 - Merge Sort
