@@ -47,10 +47,11 @@ int main_menu_loop(Window *window) {
 }
 
 int main() {
-    float const  WINDOW_WIDTH = 1080;
+    float const  WINDOW_WIDTH = 1280;
     float const ASPECT_RATIO  = 16.0 / 9.0;
     float const  WINDOW_HEIGHT = WINDOW_WIDTH / ASPECT_RATIO;
-    
+    int N = 600;
+
     Window window;
     window_init(&window, WINDOW_WIDTH, WINDOW_HEIGHT);
     
@@ -69,7 +70,6 @@ int main() {
         int keep_window_open = 1;
         
         index--;
-        int N = 100; 
         Datas datas;
         datas_init(&datas, N, WINDOW_WIDTH, WINDOW_HEIGHT);
         while (keep_window_open) {
@@ -86,6 +86,8 @@ int main() {
 
             SDL_SetRenderDrawColor(window.renderer, 0x19, 0x019, 0x19, 0xFF);
         }
+
+        datas_free(&datas);
     }
 
     SDL_DestroyRenderer(window.renderer);

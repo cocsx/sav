@@ -38,26 +38,36 @@ void datas_render(Datas* datas, Window* window) {
     }
 }
 
-void datas_render_when_sorting(Datas* datas, Window* window, int time) {
+void datas_render_when_sorting(Datas* datas, Window* window, int time, int data1, int data2) {
     SDL_RenderClear(window->renderer);
     for (int i = 0; i < datas->N; i++) {
-        SDL_SetRenderDrawColor(window->renderer, 0x00, 0xFF, 0xFF, 0xFF);
-        SDL_RenderFillRect(window->renderer, &datas->rects[i]);
+        if (i == data1 || i == data2) {
+            SDL_SetRenderDrawColor(window->renderer, 0xFF, 0x00, 0xFF, 0xFF);
+            SDL_RenderFillRect(window->renderer, &datas->rects[i]);
+        } else {
+            SDL_SetRenderDrawColor(window->renderer, 0x00, 0xFF, 0xFF, 0xFF);
+            SDL_RenderFillRect(window->renderer, &datas->rects[i]);
+        }
     }
     SDL_SetRenderDrawColor(window->renderer, 0x19, 0x019, 0x19, 0xFF);
     SDL_RenderPresent(window->renderer);
     usleep(time);
 }
 
-void swap(Datas *datas, Window *window, int num1, int num2, int time) {
-   int temp = datas->rects[num1].h;
-   datas->rects[num1].h = datas->rects[num2].h;
-   datas->rects[num2].h = temp;
-   datas_render_when_sorting(datas, window, time);
+void datas_free(Datas *datas) {
+    free(datas->rects);
+}
+
+void swap(Datas *datas, Window *window, int i, int j, int time) {
+   int temp = datas->rects[i].h;
+   datas->rects[i].h = datas->rects[j].h;
+   datas->rects[j].h = temp;
+   datas_render_when_sorting(datas, window, time, i, j);
 }
 
 // =======================================================> INSERTIONSORT 
 void insertion_sort(Datas *datas, Window *window, int start, int end) {
+    (void) start;
     for (int i = 0; i <= end; i++) {
         for (int j = 0; j <= end; j++) {
             if (datas->rects[i].h > datas->rects[j].h) {
@@ -70,8 +80,9 @@ void insertion_sort(Datas *datas, Window *window, int start, int end) {
 
 // =======================================================> BUBBLESORTSORT
 void bubble_sort(Datas *datas, Window *window, int start, int end) {
-   int i, j;
-   for (i = 0; i < end; i++) { 
+    (void) start;
+    int i, j;
+    for (i = 0; i < end; i++) { 
        for (j = 0; j < end; j++) {
            if (datas->rects[j].h < datas->rects[j + 1].h){
               swap(datas, window, j, j + 1, 200);
@@ -81,43 +92,29 @@ void bubble_sort(Datas *datas, Window *window, int start, int end) {
 }
 // BUBBLESORT <=======================================================
 
-// =======================================================> QUICKSORT ++ PROBLEMI NON PARTE ++
-int partition(Datas *datas, Window *window, int l, int h) {
-    int x = datas->rects[h].h;
-    int i = (l - 1);
-  
-    for (int j = l; j <= h - 1; j++) {
-        if (datas->rects[j].h > x) {
+// =======================================================> QUICKSORT
+int partition (Datas *datas, Window *window, int start, int end) {
+    int pivot = datas->rects[end].h;
+    int i = (start - 1);
+ 
+    for (int j = start; j <= end - 1; j++) {
+        if (datas->rects[j].h > pivot) {
             i++;
-            swap(datas, window, i, j, 900);
+            swap(datas, window, i, j, 0);
         }
     }
-    swap(datas, window, i + 1, h, 900);
+    swap(datas, window, i + 1, end, 0);
     return (i + 1);
 }
 
 void quick_sort(Datas *datas, Window *window, int start, int end) {
-    int stack[end - start + 1];
-    int top = -1;
-    stack[++top] = start;
-    stack[++top] = end;
-  
-    while (top >= 0) {
-        end = stack[top--];
-        start = stack[top--];
-
-        int p = partition(datas, window, start, end);
-        if (p - 1 > start) {
-            stack[++top] = start;
-            stack[++top] = p - 1;
-        }
-  
-        if (p + 1 < end) {
-            stack[++top] = p + 1;
-            stack[++top] = end;
-        }
+    if (start < end) {
+        int pi = partition(datas, window, start, end);
+        quick_sort(datas, window, start, pi - 1);
+        quick_sort(datas, window, pi + 1, end);
     }
 }
+
 // QUICKSORT <=======================================================
 
 // =======================================================> HEAPSORT
@@ -141,6 +138,7 @@ void heapify(Datas *datas, Window *window, int n, int i) {
 }
  
 void heap_sort(Datas *datas, Window *window, int start, int end) {
+    (void) start;
     for (int i = end / 2; i >= 0; i--) {
         heapify(datas, window, end, i);
     }
@@ -170,25 +168,27 @@ void merge(Datas *datas, Window *window, int l, int m, int r) {
     while (i < n1 && j < n2) {
         if (L[i] > R[j]) {
             datas->rects[k].h = L[i];
+            datas_render_when_sorting(datas, window, 1000, i, k);
             i++;
         } else {
             datas->rects[k].h = R[j];
+            datas_render_when_sorting(datas, window, 1000, j, k);
             j++;
         }
-        datas_render_when_sorting(datas, window, 1000);
+        
         k++;
     }
     
     while (i < n1) {
         datas->rects[k].h = L[i];
         i++; k++;
-        datas_render_when_sorting(datas, window, 1000);
+        datas_render_when_sorting(datas, window, 1000, i, k);
     }
   
     while (j < n2) {
         datas->rects[k].h = R[j];
         j++; k++;
-        datas_render_when_sorting(datas, window, 1000);
+        datas_render_when_sorting(datas, window, 1000, j, k);
     }
 }
   
