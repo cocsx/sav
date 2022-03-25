@@ -57,7 +57,7 @@ void swap(Datas *datas, Window *window, int num1, int num2, int time) {
 }
 
 // =======================================================> INSERTIONSORT
-int insertion_sort(Datas *datas, Window *window) {
+void insertion_sort(Datas *datas, Window *window, int start, int end) {
     for (int i = 0; i < datas->N; i++) {
         for (int j = 0; j < datas->N; j++) {
             if (datas->rects[i].h > datas->rects[j].h) {
@@ -65,12 +65,11 @@ int insertion_sort(Datas *datas, Window *window) {
             }
         }
     }
-    return 0;
 }
 // INSERTIONSORT <=======================================================
 
 // =======================================================> BUBBLESORTSORT
-int bubble_sort(Datas *datas, Window *window) {
+void bubble_sort(Datas *datas, Window *window, int start, int end) {
    int i, j;
    for (i = 0; i < datas->N; i++) { 
        for (j = 0; j < datas->N; j++) {
@@ -79,7 +78,6 @@ int bubble_sort(Datas *datas, Window *window) {
             }
         }
     }
-    return 0;
 }
 // BUBBLESORT <=======================================================
 
@@ -98,28 +96,27 @@ int partition(Datas *datas, Window *window, int l, int h) {
     return (i + 1);
 }
 
-int quick_sort(Datas *datas, Window *window, int l, int h) {
-    int stack[h - l + 1];
+void quick_sort(Datas *datas, Window *window, int start, int end) {
+    int stack[end - start + 1];
     int top = -1;
-    stack[++top] = l;
-    stack[++top] = h;
+    stack[++top] = start;
+    stack[++top] = end;
   
     while (top >= 0) {
-        h = stack[top--];
-        l = stack[top--];
+        end = stack[top--];
+        start = stack[top--];
 
-        int p = partition(datas, window, l, h);
-        if (p - 1 > l) {
-            stack[++top] = l;
+        int p = partition(datas, window, start, end);
+        if (p - 1 > start) {
+            stack[++top] = start;
             stack[++top] = p - 1;
         }
   
-        if (p + 1 < h) {
+        if (p + 1 < end) {
             stack[++top] = p + 1;
-            stack[++top] = h;
+            stack[++top] = end;
         }
     }
-    return 0;
 }
 // QUICKSORT <=======================================================
 
@@ -143,16 +140,15 @@ void heapify(Datas *datas, Window *window, int n, int i) {
     }
 }
  
-int heap_sort(Datas *datas, Window *window, int n) {
-    for (int i = n / 2 - 1; i >= 0; i--) {
-        heapify(datas, window, n, i);
+void heap_sort(Datas *datas, Window *window, int start, int end) {
+    for (int i = end / 2 - 1; i >= 0; i--) {
+        heapify(datas, window, end, i);
     }
  
-    for (int i = n - 1; i > 0; i--) {
+    for (int i = end - 1; i > 0; i--) {
         swap(datas, window, 0, i, 1000);
         heapify(datas, window, i, 0);
     }
-    return 0;
 }
 // HEAPSORT <=======================================================
 
@@ -196,30 +192,12 @@ void merge(Datas *datas, Window *window, int l, int m, int r) {
     }
 }
   
-int merge_sort(Datas *datas, Window *window, int l, int r) {
-    if (l < r) {
-        int m = l+(r-l)/2;
-        merge_sort(datas, window, l, m);
-        merge_sort(datas, window, m + 1, r);
-        merge(datas, window, l, m, r);
+void merge_sort(Datas *datas, Window *window, int start, int end) {
+    if (start < end) {
+        int m = start+(end-start)/2;
+        merge_sort(datas, window, start, m);
+        merge_sort(datas, window, m + 1, end);
+        merge(datas, window, start, m, end);
     }
-    return 0;
 }
 // MERGESORT <========================================================
-
-int sort_datas(Datas *datas, Window *window, SortingAlgorithm algorithm) {
-    switch (algorithm) {
-        case INSERTION:
-            return insertion_sort(datas, window);
-        case BUBBLE:
-            return bubble_sort(datas, window);
-        case QUICK:
-            return quick_sort(datas, window, 0, datas->N); // NOT WORKING
-        case HEAP:
-            return heap_sort(datas, window, datas->N);
-        case MERGE:
-            return merge_sort(datas, window, 0, datas->N);
-        default:
-            return 0;    
-    }
-}

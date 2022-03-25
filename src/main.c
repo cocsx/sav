@@ -15,46 +15,35 @@ int manage_events(SDL_Event e) {
 
 int main_menu_loop(Window *window) {
     SDL_Event event;
-    Button merge_sort;
-    button_init(&merge_sort, "merge_sort", 100, 200, 300, -50);
+
+    Button insertion_sort, bubble_sort, quick_sort, heap_sort, merge_sort;
+    button_init(&insertion_sort, "Insertion sort", 100, 10, 200, 50);
+    button_init(&bubble_sort, "Bubble sort", 100, 70, 200, 50);
+    button_init(&quick_sort, "Quick sort", 100, 130, 200, 50);
+    button_init(&heap_sort, "Heap sort", 100, 190, 200, 50);
+    button_init(&merge_sort, "Merge sort", 100, 250, 200, 50);
 
     int quit = 1;
-    int keep_window_open = 1;
-    while (keep_window_open && quit) {
+    while (quit) {
         SDL_WaitEvent(&event);
 
-        keep_window_open = button_render(&merge_sort, window, &event);
+        if (button_render(&insertion_sort, window, &event))
+            return 1;
+        if (button_render(&bubble_sort, window, &event))
+            return 2;
+        if (button_render(&quick_sort, window, &event))
+            return 3; 
+        if (button_render(&heap_sort, window, &event))
+            return 4; 
+        if (button_render(&merge_sort, window, &event))
+            return 5;
+
         quit = manage_events(event);
 
         SDL_SetRenderDrawColor(window->renderer, 0x19, 0x019, 0x19, 0xFF);
         SDL_RenderPresent(window->renderer);
     }
     return quit;
-}
-
-void game_loop(Window *window) {
-    int sorted = 1;
-    SDL_Event event;
-    int keep_window_open = 1;
-
-    int N = 400; 
-    Datas datas;
-    datas_init(&datas, N, 1080.0, (1080.0 / (16.0 / 9.0)));
-
-    while (keep_window_open) {
-        SDL_WaitEvent(&event);
-        keep_window_open = manage_events(event);
-        
-        SDL_RenderClear(window->renderer);
-
-        if (sorted) {
-            sorted = sort_datas(&datas, window, HEAP);
-        }
-        datas_render(&datas, window);
-
-        SDL_SetRenderDrawColor(window->renderer, 0x19, 0x019, 0x19, 0xFF);
-        SDL_RenderPresent(window->renderer);
-    }
 }
 
 int main() {
@@ -65,9 +54,38 @@ int main() {
     Window window;
     window_init(&window, WINDOW_WIDTH, WINDOW_HEIGHT);
     
-    int quit = main_menu_loop(&window);
-    if (quit) {
-        game_loop(&window);
+    int index = main_menu_loop(&window);
+    void (*fun_sort_arr[])(Datas *, Window *, int, int) = {
+        insertion_sort, 
+        bubble_sort, 
+        quick_sort, 
+        heap_sort, 
+        merge_sort
+    };
+
+    if (index != 0) {
+        int sorted = 1;
+        SDL_Event event;
+        int keep_window_open = 1;
+        
+        index--;
+        int N = 400; 
+        Datas datas;
+        datas_init(&datas, N, WINDOW_WIDTH, WINDOW_HEIGHT);
+        while (keep_window_open) {
+            SDL_WaitEvent(&event);
+            keep_window_open = manage_events(event);
+
+            SDL_RenderClear(window.renderer);
+
+            if (sorted) {
+                (*fun_sort_arr[index])(&datas, &window, 0, N);
+                sorted = 0;
+            }
+            datas_render(&datas, &window);
+
+            SDL_SetRenderDrawColor(window.renderer, 0x19, 0x019, 0x19, 0xFF);
+        }
     }
 
     SDL_DestroyRenderer(window.renderer);
