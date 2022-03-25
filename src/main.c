@@ -3,6 +3,7 @@
 
 #include "window.h"
 #include "button.h"
+#include "sorting_algorithms.h"
 
 int manage_events(SDL_Event e) {
     switch (e.type) {
@@ -12,73 +13,61 @@ int manage_events(SDL_Event e) {
     return 1;
 }
 
-int bubble_sort(Window *window, SDL_Rect rects[], int N) {
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            if (rects[i].h > rects[j].h) {
-                int temp = rects[i].h;
-                rects[i].h = rects[j].h;
-                rects[j].h = temp;
-                
-                SDL_RenderClear(window->renderer);
-                for (int i = 0; i < N; i++) {
-                    SDL_SetRenderDrawColor(window->renderer, 0x00, 0xFF, 0xFF, 0xFF);
-                    SDL_RenderFillRect(window->renderer, &rects[i]);
-                }
-                SDL_SetRenderDrawColor(window->renderer, 0x19, 0x019, 0x19, 0xFF);
-                SDL_RenderPresent(window->renderer);
+int main_menu_loop(Window *window) {
+    SDL_Event event;
+    Button merge_sort;
+    button_init(&merge_sort, "merge_sort", 100, 200, 300, -50);
 
-            }
-        }
+    int quit = 1;
+    int keep_window_open = 1;
+    while (keep_window_open && quit) {
+        SDL_WaitEvent(&event);
+
+        keep_window_open = button_render(&merge_sort, window, &event);
+        quit = manage_events(event);
+
+        SDL_SetRenderDrawColor(window->renderer, 0x19, 0x019, 0x19, 0xFF);
+        SDL_RenderPresent(window->renderer);
     }
-    return 0;
+    return quit;
+}
+
+void game_loop(Window *window) {
+    int sorted = 1;
+    SDL_Event event;
+    int keep_window_open = 1;
+
+    int N = 400; 
+    Datas datas;
+    datas_init(&datas, N, 1080.0, (1080.0 / (16.0 / 9.0)));
+
+    while (keep_window_open) {
+        SDL_WaitEvent(&event);
+        keep_window_open = manage_events(event);
+        
+        SDL_RenderClear(window->renderer);
+
+        if (sorted) {
+            sorted = sort_datas(&datas, window, HEAP);
+        }
+        datas_render(&datas, window);
+
+        SDL_SetRenderDrawColor(window->renderer, 0x19, 0x019, 0x19, 0xFF);
+        SDL_RenderPresent(window->renderer);
+    }
 }
 
 int main() {
     float const  WINDOW_WIDTH = 1080;
     float const ASPECT_RATIO  = 16.0 / 9.0;
-    float const  WINDOW_HEIGHT = (int) ((float) WINDOW_WIDTH / ASPECT_RATIO);
+    float const  WINDOW_HEIGHT = WINDOW_WIDTH / ASPECT_RATIO;
     
     Window window;
     window_init(&window, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-    SDL_Event event;
-    int keep_window_open = 1;
-
-    int N = 100;
-    SDL_Rect rects[N];
-    float rects_width = WINDOW_WIDTH / N;
-
-    for (int i = 0, j = N; i < N; i++) {
-        rects[i].x = i * rects_width; 
-        rects[i].y = WINDOW_HEIGHT;
-        rects[i].w = rects_width;
-        rects[i].h = - j;
-        j--;
-    }
-
-
-    Button button;
-    button_init(&button, 100, 100, 100, -100);
-
-    int sorted = 1;
-    while (keep_window_open) {
-        SDL_WaitEvent(&event);
-        keep_window_open = manage_events(event);
-        
-        //if (sorted) {
-        //    sorted = bubble_sort(&window, rects, N);
-        //}
-
-        SDL_RenderClear(window.renderer);
-        button_render(&button, &window);
-        for (int i = 0; i < N; i++) {
-            SDL_SetRenderDrawColor(window.renderer, 0x00, 0xFF, 0xFF, 0xFF);
-            SDL_RenderFillRect(window.renderer, &rects[i]);
-        }
-
-        SDL_SetRenderDrawColor(window.renderer, 0x19, 0x019, 0x19, 0xFF);
-        SDL_RenderPresent(window.renderer);
+    
+    int quit = main_menu_loop(&window);
+    if (quit) {
+        game_loop(&window);
     }
 
     SDL_DestroyRenderer(window.renderer);
