@@ -69,7 +69,7 @@ int main() {
         int keep_window_open = 1;
         
         index--;
-        int N = 400; 
+        int N = 100; 
         Datas datas;
         datas_init(&datas, N, WINDOW_WIDTH, WINDOW_HEIGHT);
         while (keep_window_open) {
@@ -79,7 +79,7 @@ int main() {
             SDL_RenderClear(window.renderer);
 
             if (sorted) {
-                (*fun_sort_arr[index])(&datas, &window, 0, N);
+                (*fun_sort_arr[index])(&datas, &window, 0, N - 1);
                 sorted = 0;
             }
             datas_render(&datas, &window);

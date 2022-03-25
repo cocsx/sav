@@ -56,10 +56,10 @@ void swap(Datas *datas, Window *window, int num1, int num2, int time) {
    datas_render_when_sorting(datas, window, time);
 }
 
-// =======================================================> INSERTIONSORT
+// =======================================================> INSERTIONSORT 
 void insertion_sort(Datas *datas, Window *window, int start, int end) {
-    for (int i = 0; i < datas->N; i++) {
-        for (int j = 0; j < datas->N; j++) {
+    for (int i = 0; i <= end; i++) {
+        for (int j = 0; j <= end; j++) {
             if (datas->rects[i].h > datas->rects[j].h) {
                 swap(datas, window, i, j, 100);
             }
@@ -71,8 +71,8 @@ void insertion_sort(Datas *datas, Window *window, int start, int end) {
 // =======================================================> BUBBLESORTSORT
 void bubble_sort(Datas *datas, Window *window, int start, int end) {
    int i, j;
-   for (i = 0; i < datas->N; i++) { 
-       for (j = 0; j < datas->N; j++) {
+   for (i = 0; i < end; i++) { 
+       for (j = 0; j < end; j++) {
            if (datas->rects[j].h < datas->rects[j + 1].h){
               swap(datas, window, j, j + 1, 200);
             }
@@ -81,13 +81,13 @@ void bubble_sort(Datas *datas, Window *window, int start, int end) {
 }
 // BUBBLESORT <=======================================================
 
-// =======================================================> QUICKSORT
+// =======================================================> QUICKSORT ++ PROBLEMI NON PARTE ++
 int partition(Datas *datas, Window *window, int l, int h) {
     int x = datas->rects[h].h;
     int i = (l - 1);
   
     for (int j = l; j <= h - 1; j++) {
-        if (datas->rects[j].h <= x) {
+        if (datas->rects[j].h > x) {
             i++;
             swap(datas, window, i, j, 900);
         }
@@ -141,11 +141,11 @@ void heapify(Datas *datas, Window *window, int n, int i) {
 }
  
 void heap_sort(Datas *datas, Window *window, int start, int end) {
-    for (int i = end / 2 - 1; i >= 0; i--) {
+    for (int i = end / 2; i >= 0; i--) {
         heapify(datas, window, end, i);
     }
  
-    for (int i = end - 1; i > 0; i--) {
+    for (int i = end; i > 0; i--) {
         swap(datas, window, 0, i, 1000);
         heapify(datas, window, i, 0);
     }
