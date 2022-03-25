@@ -5,14 +5,6 @@
 #include "button.h"
 #include "sorting_algorithms.h"
 
-int manage_events(SDL_Event e) {
-    switch (e.type) {
-        case SDL_QUIT:
-            return 0;
-    }
-    return 1;
-}
-
 int main_menu_loop(Window *window) {
     SDL_Event event;
 
@@ -25,8 +17,10 @@ int main_menu_loop(Window *window) {
     button_init(&quit_button, "QUIT", 100, 400, 200, 50);
 
     int quit = 1;
+    SDL_RenderClear(window->renderer);
     while (quit) {
         SDL_WaitEvent(&event);
+        SDL_RenderClear(window->renderer);
 
         if (button_render(&insertion_sort, window, &event))
             return 1;

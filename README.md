@@ -14,12 +14,6 @@ It can visualize the following algorithms:
 
 The elements that are being swapped are coloured purple.
 
-### TODO
-
-What remains to do ?
-
-- Final button (To go back or close the program)
-
 ## How to start the program
 
 **Without SDL2 the program can't start**.
