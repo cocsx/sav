@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
-#include "window.h"
-#include "button.h"
-#include "sorting_algorithms.h"
+#include "../headers/window.h"
+#include "../headers/button.h"
+#include "../headers/sorting_algorithms.h"
 
 int main_menu_loop(Window *window) {
     SDL_Event event;
