@@ -57,6 +57,12 @@ int main() {
 
     Window window;
     window_init(&window, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    if (TTF_Init() < 0) {
+        printf("[FATAL] Failed to initialize SDL2_TTF!\n");
+        return -1;
+    }
+
     int keep_window_open = 1;
     
     while (keep_window_open) {

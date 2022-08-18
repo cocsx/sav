@@ -2,7 +2,7 @@
 
 The purpouse of this project is to see how sorting algorithms work and to visualize the operations with wich they sort in the hope of understanding them in a better way.
 
-## What this prgram can do
+## What this program can do
 
 It can visualize the following algorithms:
 
@@ -21,7 +21,7 @@ The elements that are being swapped are coloured purple.
 If you have *SDL2* and *SDL2_ttf* installed in your pc you can run the command below.
 
 ```shell
-make && ./sav
+make && ./build/sav
 ```
 
 If you *do not* have it and you use a Linux distrubution you can install it with yout packet manager, for example in arch:
