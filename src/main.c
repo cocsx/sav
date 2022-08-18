@@ -37,6 +37,15 @@ int main_menu_loop(Window *window) {
         SDL_SetRenderDrawColor(window->renderer, 0x19, 0x019, 0x19, 0xFF);
         SDL_RenderPresent(window->renderer);
     }
+
+
+    button_free(&insertion_sort);
+    button_free(&shaker_sort);
+    button_free(&quick_sort);
+    button_free(&heap_sort);
+    button_free(&merge_sort);
+    button_free(&quit_button);
+
     return quit;
 }
 
@@ -93,6 +102,9 @@ int main() {
                 SDL_SetRenderDrawColor(window.renderer, 0x19, 0x019, 0x19, 0xFF);
                 SDL_RenderPresent(window.renderer);
             }
+
+            button_free(&quit_button);
+            button_free(&main_menu);
             datas_free(&datas);  
         } else {
             keep_window_open = 0;

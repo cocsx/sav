@@ -10,11 +10,12 @@ typedef struct button {
     SDL_Rect rect;
     char *text;
     SDL_Color active_color, inactive_color;
+    SDL_Surface* message_surface;
 } Button;
 
-void button_init_colors(Button *button, char *text, int x, int y, int w, int h, SDL_Color active_color, SDL_Color inactive_color);
-
 void button_init(Button *button, char *text, int x, int y, int w, int h);
+
+void button_free(Button *button);
 
 int button_is_selected(Button *button);
 
