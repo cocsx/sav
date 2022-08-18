@@ -1,4 +1,8 @@
 CFLAGS = -lSDL2_ttf -lSDL2 -lSDL2main -Wall -Wextra -pedantic -std=gnu17
 
+all: compile
+	./build/sav
+
 compile: ./src/*.c
-	$(CC) ./src/*.c -o sav $(CFLAGS)
+	mkdir -p ./build
+	$(CC) ./src/*.c -o ./build/sav $(CFLAGS)
