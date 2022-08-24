@@ -1,15 +1,18 @@
 #include "../headers/sorting_algorithms.h"
+#include <stdlib.h>
+#include <time.h>
 
 void datas_init(Datas *datas, int N, float window_width, float window_height) {
     datas->N = N;
     datas->rects = (SDL_Rect *) malloc(N * sizeof(SDL_Rect));
 
+    srand(time(0));
     float rects_width = window_width / N;
     for (int i = 0, j = N; i < N; i++, j--) {
         datas->rects[i].x = i * rects_width; 
         datas->rects[i].y = window_height;
         datas->rects[i].w = rects_width;
-        datas->rects[i].h = -j;
+        datas->rects[i].h = -(rand() % (int) window_height);
     }
 }
 
@@ -53,7 +56,7 @@ void insertion_sort(Datas *datas, Window *window, int start, int end) {
     for (int i = 0; i <= end; i++) {
         for (int j = 0; j <= end; j++) {
             if (datas->rects[i].h > datas->rects[j].h) {
-                swap(datas, window, i, j, 100);
+                swap(datas, window, i, j, 0);
             }
         }
     }
@@ -85,10 +88,10 @@ int partition (Datas *datas, Window *window, int start, int end) {
     for (int j = start; j <= end - 1; j++) {
         if (datas->rects[j].h > pivot) {
             i++;
-            swap(datas, window, i, j, 0);
+            swap(datas, window, i, j, 1000);
         }
     }
-    swap(datas, window, i + 1, end, 0);
+    swap(datas, window, i + 1, end, 1000);
     return (i + 1);
 }
 
@@ -117,7 +120,7 @@ void heapify(Datas *datas, Window *window, int n, int i) {
     }
 
     if (largest != i) {
-        swap(datas, window, i, largest, 2000);
+        swap(datas, window, i, largest, 1000);
         heapify(datas, window, n, largest);
     }
 }

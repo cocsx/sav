@@ -14,7 +14,7 @@ void button_init(Button *button, char *text, int x, int y, int w, int h) {
     button->inactive_color = inactive_color;
     button->text           = text;
 
-    TTF_Font *font = TTF_OpenFont("Bullpen3D.ttf", 40);
+    TTF_Font *font = TTF_OpenFont("font.ttf", 40);
     if (font == NULL){
         printf("[ERROR] Unable to load font: %s\n", TTF_GetError());
     }
