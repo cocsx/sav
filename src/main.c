@@ -53,7 +53,7 @@ int main() {
     float const  WINDOW_WIDTH = 1280;
     float const ASPECT_RATIO  = 16.0 / 9.0;
     float const  WINDOW_HEIGHT = WINDOW_WIDTH / ASPECT_RATIO;
-    int N = 600;
+    int N = 640;
 
     Window window;
     window_init(&window, WINDOW_WIDTH, WINDOW_HEIGHT);
